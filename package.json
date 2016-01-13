@@ -1,0 +1,19 @@
+{
+  "name": "webrtc-peer",
+  "version": "1.0.0",
+  "description": "A webrtc library written in typescript",
+  "main": "src/index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "webrtc",
+    "typescript",
+    "library"
+  ],
+  "author": "korve <aeckardt@outlook.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^1.7.5"
+  }
+}
