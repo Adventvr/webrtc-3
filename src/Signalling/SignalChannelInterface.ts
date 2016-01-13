@@ -1,6 +1,6 @@
-/// <reference path="../lib/DefinitelyTyped/webrtc/RTCPeerConnection" />
+/// <reference path="../../lib/DefinitelyTyped/webrtc/RTCPeerConnection" />
 
-module WebRTC {
+module WebRTC.Signalling {
 	export interface SignalChannelInterface {
 		/**
 		 * Offers own sdp. Resolves with ICE candidate information 
