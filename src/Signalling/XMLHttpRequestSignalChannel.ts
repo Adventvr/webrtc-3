@@ -28,10 +28,14 @@ module WebRTC.Signalling {
 				throw new Error("sdp.type is not 'offer'");
 			}
 			
-			var data:{} = {
-				sdp: session.sdp
-			}
-			return this.sendRequest(this._server.url + "/offer", data, "POST", "json");
+			return this.send({
+				url: this._server.url + "/offer",
+				method: Request.Method.POST,
+				data: {
+					sdp: session.sdp
+				},
+				responseType: Request.ResponseType.json
+			});
 		}
 		
 		answer(session:RTCSessionDescription):Promise<RTCIceCandidate> {
@@ -39,7 +43,13 @@ module WebRTC.Signalling {
 				throw new Error("sdp.type is not 'answer'");
 			}
 			
-			return this.sendRequest(this._server.url + "/answer", {}, "POST", "json");
+			return this.send({
+				url: this._server.url + "/answer",
+				method: Request.Method.POST,
+				data: {
+				},
+				responseType: Request.ResponseType.json
+			});
 		}
 	}
 }

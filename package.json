@@ -4,6 +4,7 @@
   "description": "A webrtc library written in typescript",
   "main": "src/index.ts",
   "scripts": {
+	"build": "tsc -p .",
     "test": "parallelshell 'karma start' 'tsc -w tests/**/*.ts'"
   },
   "keywords": [
