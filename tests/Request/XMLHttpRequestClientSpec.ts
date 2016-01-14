@@ -24,7 +24,7 @@ describe( "AjaxClient", () => {
 		var callback = sinon.spy();
 		
 		var client = new Request.XMLHttpRequestClient();
-		client.sendRequest("")
+		client.send({url:""})
 			.then(callback)
 			.then(() => {
 				expect(requests[0].method).toEqual("GET");
@@ -45,7 +45,7 @@ describe( "AjaxClient", () => {
 			promises:Promise<any>[] = [];
 		
 		responses.forEach( (status) => {
-			promises.push(client.sendRequest("").catch(callback));
+			promises.push(client.send({url:""}).catch(callback));
 		} );
 		
 		Promise.all(promises)
@@ -65,7 +65,7 @@ describe( "AjaxClient", () => {
 		var callback = sinon.spy();
 		
 		var client = new Request.XMLHttpRequestClient();
-		client.sendRequest("", {}, "GET", "json")
+		client.send({url:"", responseType: Request.ResponseType.json}) 
 			.then(callback)
 			.then(() => {
 				expect(callback.calledWith({ test: "test" })).toBe(true); 
@@ -82,7 +82,7 @@ describe( "AjaxClient", () => {
 			data:Object = { test: "test" };
 		
 		var client = new Request.XMLHttpRequestClient();
-		client.sendRequest("", data, "POST", "text")
+		client.send({url:"", method: Request.Method.POST, data: data, headers: {"Content-Type": "application/json;charset=utf-8"}})
 			.then(callback)
 			.then(() => {
 				expect(requests[0].requestHeaders['Content-Type']).toEqual("application/json;charset=utf-8");

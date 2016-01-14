@@ -31,7 +31,7 @@ module WebRTC.Signalling {
 			var data:{} = {
 				sdp: session.sdp
 			}
-			return this.sendRequest(this._server.url + "/offer", {}, "POST", "json");
+			return this.sendRequest(this._server.url + "/offer", data, "POST", "json");
 		}
 		
 		answer(session:RTCSessionDescription):Promise<RTCIceCandidate> {

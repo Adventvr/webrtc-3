@@ -17,7 +17,7 @@ describe("AjaxClient", function () {
     it("should resolve when status code is >= 200 and < 300", function (done) {
         var callback = sinon.spy();
         var client = new Request.XMLHttpRequestClient();
-        client.sendRequest("")
+        client.send({ url: "" })
             .then(callback)
             .then(function () {
             expect(requests[0].method).toEqual("GET");
@@ -32,7 +32,7 @@ describe("AjaxClient", function () {
         var client = new Request.XMLHttpRequestClient();
         var responses = [500, 400, 300, 199, 100], promises = [];
         responses.forEach(function (status) {
-            promises.push(client.sendRequest("").catch(callback));
+            promises.push(client.send({ url: "" }).catch(callback));
         });
         Promise.all(promises)
             .then(function () {
@@ -47,7 +47,7 @@ describe("AjaxClient", function () {
     it("should resolve json response to a json object", function (done) {
         var callback = sinon.spy();
         var client = new Request.XMLHttpRequestClient();
-        client.sendRequest("", {}, "GET", "json")
+        client.send({ url: "", responseType: Request.ResponseType.json })
             .then(callback)
             .then(function () {
             expect(callback.calledWith({ test: "test" })).toBe(true);
@@ -59,7 +59,7 @@ describe("AjaxClient", function () {
     it("should post json", function (done) {
         var callback = sinon.spy(), data = { test: "test" };
         var client = new Request.XMLHttpRequestClient();
-        client.sendRequest("", data, "POST", "text")
+        client.send({ url: "", method: Request.Method.POST, data: data, headers: { "Content-Type": "application/json;charset=utf-8" } })
             .then(callback)
             .then(function () {
             expect(requests[0].requestHeaders['Content-Type']).toEqual("application/json;charset=utf-8");
