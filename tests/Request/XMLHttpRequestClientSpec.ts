@@ -1,5 +1,6 @@
 /// <reference path="../../lib/DefinitelyTyped/jasmine/jasmine.d.ts" />
 /// <reference path="../../lib/DefinitelyTyped/sinon/sinon.d.ts" />
+/// <reference path="../../lib/DefinitelyTyped//es6-promise/es6-promise" />
 /// <reference path="../../src/Request/XMLHttpRequestClient" />
 
 describe( "AjaxClient", () => {
@@ -23,7 +24,7 @@ describe( "AjaxClient", () => {
 	it("should resolve when status code is >= 200 and < 300", (done) => {
 		var callback = sinon.spy();
 		
-		var client = new Request.XMLHttpRequestClient();
+		var client = new WebRTC.Request.XMLHttpRequestClient();
 		client.send({url:""})
 			.then(callback)
 			.then(() => {
@@ -40,7 +41,7 @@ describe( "AjaxClient", () => {
 	it("should reject when status code > 299 or < 200", (done) => {
 		var callback = sinon.spy();
 		
-		var client = new Request.XMLHttpRequestClient();
+		var client = new WebRTC.Request.XMLHttpRequestClient();
 		var responses = [500, 400, 300, 199, 100],
 			promises:Promise<any>[] = [];
 		
@@ -64,8 +65,8 @@ describe( "AjaxClient", () => {
 	it("should resolve json response to a json object", (done) => {
 		var callback = sinon.spy();
 		
-		var client = new Request.XMLHttpRequestClient();
-		client.send({url:"", responseType: Request.ResponseType.json}) 
+		var client = new WebRTC.Request.XMLHttpRequestClient();
+		client.send({url:"", responseType: WebRTC.Request.ResponseType.json}) 
 			.then(callback)
 			.then(() => {
 				expect(callback.calledWith({ test: "test" })).toBe(true); 
@@ -81,8 +82,8 @@ describe( "AjaxClient", () => {
 		var callback = sinon.spy(),
 			data:Object = { test: "test" };
 		
-		var client = new Request.XMLHttpRequestClient();
-		client.send({url:"", method: Request.Method.POST, data: data, headers: {"Content-Type": "application/json;charset=utf-8"}})
+		var client = new WebRTC.Request.XMLHttpRequestClient();
+		client.send({url:"", method: WebRTC.Request.Method.POST, data: data, headers: {"Content-Type": "application/json;charset=utf-8"}})
 			.then(callback)
 			.then(() => {
 				expect(requests[0].requestHeaders['Content-Type']).toEqual("application/json;charset=utf-8");

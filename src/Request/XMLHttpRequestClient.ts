@@ -1,4 +1,4 @@
-module Request {
+module WebRTC.Request {
 	export enum Method {
 		GET,
 		POST,

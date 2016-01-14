@@ -7,11 +7,5 @@ module WebRTC.Signalling {
 		 * when successful
 		 */
 		offer(session:RTCSessionDescription):Promise<RTCIceCandidate>;
-		
-		/**
-		 * Answers a received sdp offer. Resolves with ICE candidate 
-		 * information when successful
-		 */
-		answer(session:RTCSessionDescription):Promise<RTCIceCandidate>;
 	}
 }
