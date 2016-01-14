@@ -3,10 +3,11 @@ var Request;
     var XMLHttpRequestClient = (function () {
         function XMLHttpRequestClient() {
         }
-        XMLHttpRequestClient.prototype.sendRequest = function (url, data, method, responseType) {
+        XMLHttpRequestClient.prototype.sendRequest = function (url, data, method, responseType, charset) {
             if (data === void 0) { data = null; }
             if (method === void 0) { method = "GET"; }
             if (responseType === void 0) { responseType = ""; }
+            if (charset === void 0) { charset = "utf-8"; }
             return new Promise(function (resolve, reject) {
                 var req = new XMLHttpRequest();
                 // Since we return a promise, we always use async requests
@@ -24,6 +25,12 @@ var Request;
                         }
                     }
                 };
+                if (typeof data === "object") {
+                    req.setRequestHeader("Content-Type", "application/json;charset=" + charset);
+                }
+                else {
+                    req.setRequestHeader("Content-Type", "text/plain;charset=" + charset);
+                }
                 req.send(data);
             });
         };

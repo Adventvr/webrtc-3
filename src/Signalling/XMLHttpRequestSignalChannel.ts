@@ -1,5 +1,6 @@
 /// <reference path="../../lib/DefinitelyTyped/webrtc/RTCPeerConnection" />
 /// <reference path="SignalChannelInterface" />
+/// <reference path="../Request/XMLHttpRequestClient" />
 
 module WebRTC.Signalling {
 	interface XMLHttpRequestSignallingServer {
@@ -9,11 +10,12 @@ module WebRTC.Signalling {
 	/**
 	 * Handles signalling using xmlhttprequests
 	 */
-	export class XMLHttpRequestSignalChannel implements SignalChannelInterface {
+	export class XMLHttpRequestSignalChannel extends Request.XMLHttpRequestClient implements SignalChannelInterface {
 		
-		private _server: XMLHttpRequestSignallingServer;
+		protected _server: XMLHttpRequestSignallingServer;
 		
 		constructor(server:XMLHttpRequestSignallingServer) {
+			super();
 			this._server = server;
 		}
 		
@@ -22,33 +24,22 @@ module WebRTC.Signalling {
 		 * when successful
 		 */
 		offer(session:RTCSessionDescription):Promise<RTCIceCandidate> {
-			var self = this;
+			if(session.type !== "offer") {
+				throw new Error("sdp.type is not 'offer'");
+			}
 			
-			return new Promise( function(resolve, reject) {
-				var req = new XMLHttpRequest();
-				req.open("POST", self._server.url, true);
-				req.onreadystatechange = function() {
-					if(this.readyState === 4 && this.status === 200) {
-						resolve();
-						return;
-					}
-					
-					reject(new Error("Error while offering sdp. Status: " + 
-										this.status + "; Response:" + 
-										this.responseText));
-				};
-				req.send();
-			} );
+			var data:{} = {
+				sdp: session.sdp
+			}
+			return this.sendRequest(this._server.url + "/offer", {}, "POST", "json");
 		}
 		
-		/**
-		 * Answers a received sdp offer. Resolves with ICE candidate 
-		 * information when successful
-		 */
 		answer(session:RTCSessionDescription):Promise<RTCIceCandidate> {
-			return Promise.reject(new Error("Not implemented"));
+			if(session.type !== "answer") {
+				throw new Error("sdp.type is not 'answer'");
+			}
+			
+			return this.sendRequest(this._server.url + "/answer", {}, "POST", "json");
 		}
-		
-		private createRequest(url:string, )
 	}
 }

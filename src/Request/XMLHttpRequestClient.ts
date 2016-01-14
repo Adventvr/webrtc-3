@@ -1,6 +1,6 @@
 module Request {
 	export class XMLHttpRequestClient {
-		public sendRequest(url:string, data:any=null, method:string="GET", responseType:string=""):Promise<any> {
+		public sendRequest(url:string, data:(Object|string)=null, method="GET", responseType="", charset="utf-8"):Promise<any> {
 			return new Promise( function(resolve, reject) {
 				var req = new XMLHttpRequest();
 				// Since we return a promise, we always use async requests
@@ -18,6 +18,13 @@ module Request {
 						}
 					}
 				};
+				
+				if(typeof data === "object") {
+					req.setRequestHeader("Content-Type", "application/json;charset=" + charset);
+				} else {
+					req.setRequestHeader("Content-Type", "text/plain;charset=" + charset);					
+				}
+				
 				req.send(data);
 			} );
 		};
